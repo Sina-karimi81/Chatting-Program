@@ -95,7 +95,7 @@ public class Server extends JFrame {
            catch(IOException | ClassNotFoundException e)
            {
                showMessage("Wrong command!!");
-              e.printStackTrace();
+               e.printStackTrace();
            }
         }while (!message.equals("Client - End"));
     }
@@ -107,7 +107,6 @@ public class Server extends JFrame {
         try
         {
             socket.close();
-            output.flush();
             input.close();
             output.close();
         }
