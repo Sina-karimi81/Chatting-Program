@@ -1,5 +1,4 @@
 import java.net.*;
-import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,7 +31,7 @@ public class Server extends JFrame {
          chatWindow = new JTextArea();
          chatWindow.setEditable(false);
          add(new JScrollPane(chatWindow));
-         setSize(1280 , 720);
+         setSize(720 , 600);
          setVisible(true);
     }
 
@@ -67,9 +66,9 @@ public class Server extends JFrame {
 
     private void Connection() throws IOException
     {
-        showMessage("Waiting for a conncetion....");
+        showMessage("Waiting for a conncetion...." + "\n");
         socket = server.accept();
-        showMessage("Connected to: " + socket.getInetAddress().getHostName());
+        showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
     }
 
     private void Setup() throws IOException
@@ -77,12 +76,12 @@ public class Server extends JFrame {
         output = new ObjectOutputStream(socket.getOutputStream());
         output.flush();
         input = new ObjectInputStream(socket.getInputStream());
-        showMessage("EveryThing is done!");
+        showMessage("EveryThing is done!" + "\n");
     }
 
     private void Chatting() throws  IOException
     {
-        String message = "Connected";
+        String message = "Connected\n";
         sendMessage(message);
         canType(true);
 
@@ -91,10 +90,11 @@ public class Server extends JFrame {
            try
            {
                message = (String) input.readObject();
+               showMessage(message + "\n");
            }
            catch(IOException | ClassNotFoundException e)
            {
-               showMessage("Wrong command!!");
+               showMessage("Wrong command or Connection closed!!!" + "\n");
                e.printStackTrace();
            }
         }while (!message.equals("Client - End"));
@@ -102,7 +102,7 @@ public class Server extends JFrame {
 
     private void closeAll()
     {
-        showMessage("Closing the Connections");
+        showMessage("Closing the Connections" + "\n");
         canType(false);
         try
         {
@@ -120,9 +120,9 @@ public class Server extends JFrame {
     {
         try
         {
-            output.writeObject("Server: " + message);
+            output.writeObject("Server: " + message + "\n");
             output.flush();
-            showMessage("Server: " + message);
+            showMessage("Server: " + message + "\n");
         }
         catch (IOException e)
         {
