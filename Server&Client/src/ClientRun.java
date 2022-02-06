@@ -8,7 +8,7 @@ public class ClientRun {
         MultipleClients mp3 = new MultipleClients();
 
         mp1.start();
-        mp2.start();
-        mp3.start();
+        //mp2.start();
+        //mp3.start();
     }
 }

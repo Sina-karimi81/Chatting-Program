@@ -40,12 +40,9 @@ public class Client extends JFrame {
     {
         try
         {
-            while(true)
-            {
-                Connection();
-                Setup();
-                Chatting();
-            }
+            Connection();
+            Setup();
+            Chatting();
         }
         catch(EOFException e)
         {
@@ -110,7 +107,7 @@ public class Client extends JFrame {
                 showMessage("Wrong command!!" + "\n");
                 e.printStackTrace();
             }
-        }while (!message.equals("Server - End"));
+        }while (!message.equals("Server: End"));
     }
 
     private void sendMessage(String message)

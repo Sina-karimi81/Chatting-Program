@@ -66,7 +66,7 @@ public class Server extends JFrame {
 
     private void Connection() throws IOException
     {
-        showMessage("Waiting for a conncetion...." + "\n");
+        showMessage("Waiting for a connection...." + "\n");
         socket = server.accept();
         showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
     }
@@ -97,7 +97,7 @@ public class Server extends JFrame {
                showMessage("Wrong command or Connection closed!!!" + "\n");
                e.printStackTrace();
            }
-        }while (!message.equals("Client - End"));
+        }while (!message.equals("Client: End"));
     }
 
     private void closeAll()
