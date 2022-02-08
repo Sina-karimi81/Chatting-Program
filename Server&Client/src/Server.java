@@ -2,18 +2,18 @@ import java.net.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.print.DocFlavor;
 import javax.swing.*;
 
 public class Server extends JFrame {
     private JTextField userText;
     private JTextArea chatWindow;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    ObjectOutputStream output;
+    ObjectInputStream input;
     private ServerSocket server;
     private Socket socket;
 
-    public Server()
-    {
+    public Server(){
         super("Server");
         userText = new JTextField();
         userText.setEditable(false);
@@ -68,14 +68,14 @@ public class Server extends JFrame {
     {
         showMessage("Waiting for a connection...." + "\n");
         socket = server.accept();
-        showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
+        if(socket.isConnected())
+        {
+            showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
+        }
     }
 
     private void Setup() throws IOException
     {
-        output = new ObjectOutputStream(socket.getOutputStream());
-        output.flush();
-        input = new ObjectInputStream(socket.getInputStream());
         showMessage("EveryThing is done!" + "\n");
     }
 

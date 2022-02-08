@@ -62,7 +62,10 @@ public class Client extends JFrame {
     {
         showMessage("Connecting...." + "\n");
         socket = new Socket(InetAddress.getByName(IP) , 4000);
-        showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
+        if(socket.isConnected())
+        {
+            showMessage("Connected to: " + socket.getInetAddress().getHostName() + "\n");
+        }
     }
 
     private void Setup() throws IOException
