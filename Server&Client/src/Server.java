@@ -105,7 +105,7 @@ public class Server extends JFrame {
                showMessage("Wrong command or Connection closed!!!" + "\n");
                e.printStackTrace();
            }
-        }while (!message.equals("Client: End"));
+        }while (!message.equalsIgnoreCase("Client: End"));
     }
 
     private void closeAll()

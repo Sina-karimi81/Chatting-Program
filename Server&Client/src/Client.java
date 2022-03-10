@@ -110,7 +110,8 @@ public class Client extends JFrame {
                 showMessage("Wrong command!!" + "\n");
                 e.printStackTrace();
             }
-        }while (!message.equals("Server: End"));
+        }while (!message.equalsIgnoreCase("Server: End"));
+        socket.close();
     }
 
     private void sendMessage(String message)
