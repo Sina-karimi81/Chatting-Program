@@ -8,8 +8,10 @@ import javax.swing.*;
 public class Server extends JFrame {
     private JTextField userText;
     private JTextArea chatWindow;
-    ObjectOutputStream output;
-    ObjectInputStream input;
+    private OutputStreamWriter output;
+    private InputStreamReader input;
+    private BufferedWriter writer;
+    private BufferedReader reader;
     private ServerSocket server;
     private Socket socket;
 
@@ -22,7 +24,7 @@ public class Server extends JFrame {
                      @Override
                      public void actionPerformed(ActionEvent e)
                      {
-                         showMessage(e.getActionCommand());
+                         sendMessage(e.getActionCommand());
                          userText.setText(" ");
                      }
                  }
@@ -76,6 +78,12 @@ public class Server extends JFrame {
 
     private void Setup() throws IOException
     {
+        output = new OutputStreamWriter(socket.getOutputStream());
+        writer = new BufferedWriter(output);
+        output.flush();
+        writer.flush();
+        input = new InputStreamReader(socket.getInputStream());
+        reader = new BufferedReader(input);
         showMessage("EveryThing is done!" + "\n");
     }
 
@@ -89,10 +97,10 @@ public class Server extends JFrame {
         {
            try
            {
-               message = (String) input.readObject();
+               message = reader.readLine();
                showMessage(message + "\n");
            }
-           catch(IOException | ClassNotFoundException e)
+           catch(IOException e)
            {
                showMessage("Wrong command or Connection closed!!!" + "\n");
                e.printStackTrace();
@@ -120,8 +128,8 @@ public class Server extends JFrame {
     {
         try
         {
-            output.writeObject("Server: " + message + "\n");
-            output.flush();
+            writer.write("Server: " + message + "\n");
+            writer.flush();
             showMessage("Server: " + message + "\n");
         }
         catch (IOException e)

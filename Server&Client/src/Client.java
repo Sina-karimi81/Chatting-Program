@@ -7,10 +7,12 @@ import javax.swing.*;
 public class Client extends JFrame {
     private JTextField userText;
     private JTextArea chatWindow;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    private OutputStreamWriter output;
+    private InputStreamReader input;
+    private BufferedWriter writer;
+    private BufferedReader reader;
     private Socket socket;
-    private String IP;
+    private final String IP;
 
     public Client(String hostIP)
     {
@@ -23,7 +25,7 @@ public class Client extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        showMessage(e.getActionCommand());
+                        sendMessage(e.getActionCommand());
                         userText.setText(" ");
                     }
                 }
@@ -44,15 +46,10 @@ public class Client extends JFrame {
             Setup();
             Chatting();
         }
-        catch(EOFException e)
+        catch(IOException e)
         {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
+        } finally
         {
             closeAll();
         }
@@ -70,9 +67,12 @@ public class Client extends JFrame {
 
     private void Setup() throws IOException
     {
-        output = new ObjectOutputStream(socket.getOutputStream());
+        output = new OutputStreamWriter(socket.getOutputStream());
+        writer = new BufferedWriter(output);
         output.flush();
-        input = new ObjectInputStream(socket.getInputStream());
+        writer.flush();
+        input = new InputStreamReader(socket.getInputStream());
+        reader = new BufferedReader(input);
         showMessage("EveryThing is done!" + "\n");
     }
 
@@ -102,10 +102,10 @@ public class Client extends JFrame {
         {
             try
             {
-                message = (String) input.readObject();
+                message = reader.readLine();
                 showMessage(message + "\n");
             }
-            catch(IOException | ClassNotFoundException e)
+            catch(IOException e)
             {
                 showMessage("Wrong command!!" + "\n");
                 e.printStackTrace();
@@ -117,8 +117,8 @@ public class Client extends JFrame {
     {
         try
         {
-            output.writeObject("Client: " + message + "\n");
-            output.flush();
+            writer.write("Client: " + message + "\n");
+            writer.flush();
             showMessage("Client: " + message + "\n");
         }
         catch (IOException e)
